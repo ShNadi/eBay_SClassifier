@@ -9,8 +9,9 @@ pd.set_option('display.expand_frame_repr', False)
 data_set = pd.read_stata("data/ebay2_indegrees_comments.dta", chunksize=1000000,
                          columns=['FeedbackID', 'FeedbackComment', 'FeedbackStatus'])
 for chunk in data_set:
-    corpus = pd.DataFrame(chunk['FeedbackStatus'])
-    de_preprocessing.cleanup_doc(chunk)
+    # corpus = pd.DataFrame(chunk['FeedbackStatus'])
+    corpus = de_preprocessing.cleanup_document(chunk)
+    preprocessed_corpus = de_preprocessing.pre_process(corpus)
 
 
 
