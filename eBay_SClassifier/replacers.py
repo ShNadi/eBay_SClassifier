@@ -54,25 +54,3 @@ class RegexpReplacer(object):
 # replacer = RegexpReplacer()
 # print(replacer.replace("can't is a contraction"))
 
-#
-# def spell_correction(dataFrame, language="nl"):
-#     """Spell correction for the selected language.
-#     :param X: Matrix of raw documents
-#     :type X: list
-#     :param language: Language of text
-#     :type language: str
-#     :return: Spell-corrected data
-#     :rtype: list
-#     """
-#     tool = language_check.LanguageTool(language)
-#     print("Spell correction: ")
-#     for i in tqdm(range(dataFrame.__len__())):
-#         matches = tool.check(dataFrame[i].content)
-#         dataFrame[i].content = language_check.correct(dataFrame[i].content, matches)
-#
-#     return dataFrame
-#
-#
-# txt = ['this is wong']
-# t = spell_correction(txt)
-# print()
