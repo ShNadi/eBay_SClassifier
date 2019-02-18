@@ -10,14 +10,26 @@ from spellchecker import SpellChecker
 pd.set_option('display.expand_frame_repr', False)
 
 
-def cleanup_document(corpus):
+# def cleanup_document(corpus):
+#         # remove lines without comments
+#         removed_no_comment = corpus[corpus['FeedbackComment'] != "no comment"]
+#         # change FeedbackStatus field to some meaningful values. 0 -> negative,  1 -> positive, 9-> neutral
+#         removed_no_comment.loc[removed_no_comment.FeedbackStatus == 0, 'FeedbackStatus'] = "negative"
+#         removed_no_comment.loc[removed_no_comment.FeedbackStatus == 1, 'FeedbackStatus'] = "positive"
+#         removed_no_comment.loc[removed_no_comment.FeedbackStatus == 9, 'FeedbackStatus'] = "neutral"
+#         return removed_no_comment
+
+def clean(corpus):
+    for row in corpus:
         # remove lines without comments
-        removed_no_comment = corpus[corpus['FeedbackComment'] != "no comment"]
-        # change FeedbackStatus field to some meaningful values. 0 -> negative,  1 -> positive, 9-> neutral
-        removed_no_comment.loc[removed_no_comment.FeedbackStatus == 0, 'FeedbackStatus'] = "negative"
-        removed_no_comment.loc[removed_no_comment.FeedbackStatus == 1, 'FeedbackStatus'] = "positive"
-        removed_no_comment.loc[removed_no_comment.FeedbackStatus == 9, 'FeedbackStatus'] = "neutral"
-        return removed_no_comment
+        print("Removing empty rows...")
+        row.drop(row[row.FeedbackComment == 'no comment'].index, inplace=True)
+        print("empty rows are removed!")
+        print("Renaming FeedbackValue...")
+        # change FeedbackValue field to some meaningful values. 1 -> negative,  2 -> positive, 8-> neutral
+        row.FeedbackValue.replace([1, 2, 8], ['negative', 'positive', 'neutral'], inplace=True)
+        print("FeedbackValue column is updated!")
+        return corpus
 
 
 def pre_process(corpus):
