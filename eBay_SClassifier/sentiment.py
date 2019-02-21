@@ -1,28 +1,26 @@
-# from afinn import Afinn
-#
-#
-# afinn = Afinn(language='da')
-# print(afinn.score('Hvis ikke det er det mest afskyelige flueknepperi...'))
+from textblob_de import TextBlobDE as TextBlobDE
+import pandas as pd
+
+pd.set_option('display.expand_frame_repr', False)
 
 
-# from textblob import TextBlob
-from textblob_de import TextBlobDE as TextBlob
+def sentiment_de(text):
+    rate = 0
+    blob = TextBlobDE(text)
+    for sentence in blob.sentences:
+        rate = rate + sentence.sentiment.polarity
+    if rate > 0:
+        return 'Positive'
+    if rate < 0:
+        return 'negative'
+    if rate == 0:
+        return 'neutral'
 
 
-statement = TextBlob("will nicht zahlen!.")
-print(statement.sentiment)
+data_set = pd.read_stata("data/ebay2_indegrees_comments.dta", chunksize=10,
+                         columns=['FeedbackID', 'FeedbackComment', 'FeedbackValue'])
+for chunk in data_set:
+    chunk['sentiment_textblob'] = chunk.apply(lambda x: sentiment_de(x['FeedbackComment']), axis=1)
+    print(chunk)
 
-# text1 = TextBlob("Today is a great day, but it is boring")
-# text1.sentiment.polarity
-#
-# from textblob import TextBlob
-# ### My input text is a column from a dataframe that contains tweets.
-#
-# def sentiment(x):
-#     sentiment = TextBlob(x)
-#     return sentiment.sentiment.polarity
-#
-# tweetsdf['sentiment'] = tweetsdf['processed_tweets'].apply(sentiment)
-# tweetsdf['senti'][tweetsdf['sentiment']>0] = 'positive'
-# tweetsdf['senti'][tweetsdf['sentiment']<0] = 'negative'
-# tweetsdf['senti'][tweetsdf['sentiment']==0] = 'neutral'
+
