@@ -1,5 +1,6 @@
 from textblob_de import TextBlobDE as TextBlobDE
 import pandas as pd
+from polyglot.text import Text
 
 
 pd.set_option('display.expand_frame_repr', False)
@@ -18,9 +19,26 @@ def sentiment_de(text):
         return 'neutral'
 
 
+def sentiment_polyglot(txt):
+    doc_rate = 0
+    text = Text(txt, hint_language_code='de')
+    for sentence in text.sentences:
+        word_rate = 0
+        for word in sentence.words:
+            word_rate = word_rate + word.polarity
+        doc_rate = doc_rate + word_rate
+    if doc_rate > 0:
+        return 'positive'
+    if doc_rate < 0:
+        return 'negative'
+    if doc_rate == 0:
+        return 'neutral'
+
+
 data_set = pd.read_stata("data/ebay2_indegrees_comments.dta", chunksize=10,
                          columns=['FeedbackID', 'FeedbackComment', 'FeedbackValue'])
 for chunk in data_set:
-    chunk['sentiment_textblob'] = chunk.apply(lambda x: sentiment_de(x['FeedbackComment']), axis=1)
+    # chunk['sentiment_textblob'] = chunk.apply(lambda x: sentiment_de(x['FeedbackComment']), axis=1)
+    chunk['sentiment_polyglot'] = chunk.apply(lambda y: sentiment_polyglot(y['FeedbackComment']), axis=1)
     print(chunk)
 
