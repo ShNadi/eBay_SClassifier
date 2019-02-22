@@ -102,3 +102,20 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+eBay_SClassifier/chunk/data_1.csv
+papers/elmurngi_gherbi_2018_jcs.pdf
+papers/bridges_vasquez_2018_cit (1).pdf
+eBay_SClassifier/chunk/data_10.csv
+eBay_SClassifier/chunk/data_11.csv
+eBay_SClassifier/chunk/data_12.csv
+eBay_SClassifier/chunk/data_2.csv
+eBay_SClassifier/chunk/data_3.csv
+eBay_SClassifier/chunk/data_4.csv
+eBay_SClassifier/chunk/data_5.csv
+eBay_SClassifier/chunk/data_6.csv
+eBay_SClassifier/chunk/data_8.csv
+eBay_SClassifier/chunk/data_9.csv
+eBay_SClassifier/data/airline.dta
+eBay_SClassifier/data/columns.txt
+eBay_SClassifier/data/ebay2_indegrees_comments.dta
+eBay_SClassifier/data/ebay2_indegrees_comments_ItemIDs.dta

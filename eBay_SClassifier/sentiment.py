@@ -13,9 +13,9 @@ def sentiment_de(text):
         rate_blob = rate_blob + sentence.sentiment.polarity
     if rate_blob > 0:
         return 'Positive'
-    if rate_blob < 0:
+    elif rate_blob < 0:
         return 'negative'
-    if rate_blob == 0:
+    else:
         return 'neutral'
 
 
@@ -25,13 +25,16 @@ def sentiment_polyglot(txt):
     for sentence in text.sentences:
         word_rate = 0
         for word in sentence.words:
-            word_rate = word_rate + word.polarity
+            try:
+                word_rate = word_rate + word.polarity
+            except:
+                word_rate = word_rate + 0
         doc_rate = doc_rate + word_rate
     if doc_rate > 0:
         return 'positive'
-    if doc_rate < 0:
+    elif doc_rate < 0:
         return 'negative'
-    if doc_rate == 0:
+    else:
         return 'neutral'
 
 
