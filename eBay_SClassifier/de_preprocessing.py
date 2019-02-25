@@ -10,12 +10,26 @@ from spellchecker import SpellChecker
 pd.set_option('display.expand_frame_repr', False)
 
 
+def check_spell4(text):
+    word = text.split()
+    strc = ""
+    spell = SpellChecker(language='de')
+    misspelled = spell.unknown(word)
+    for w in word:
+        if w in misspelled:
+            strc = strc + " " + spell.correction(w)
+        else:
+            strc = strc + " " + w
+
+    return strc
+
+
 def clean(corpus):
     for row in corpus:
         # remove lines without comments
-        print("Removing empty rows...")
-        row.drop(row[row.FeedbackComment == 'no comment'].index, inplace=True)
-        print("empty rows are removed!")
+        # print("Removing empty rows...")
+        # row.drop(row[row.FeedbackComment == 'no comment'].index, inplace=True)
+        # print("empty rows are removed!")
         print("Renaming FeedbackValue...")
         # change FeedbackValue field to some meaningful values. 1 -> negative,  2 -> positive, 8-> neutral
         row.FeedbackValue.replace([1, 2, 8], ['negative', 'positive', 'neutral'], inplace=True)
@@ -35,15 +49,8 @@ def pre_process(corpus):
     corpus['removed_repetition'] = corpus.apply(lambda y: repeater.repeat(y['removed_punctuation']), axis=1)
     print(corpus)
 
-    # # correct spelling
-    # spell = SpellChecker(language='de')
-    # misspelled = spell.unknown(['somthing', 'is', 'hapenning', 'hee'])
-    # for word in misspelled:
-    #     # Get the one `most likely` answer
-    #     print(spell.correction(word))
-    #
-    #     # Get a list of `likely` options
-    #     print(spell.candidates(word))
+    # correct spelling
+    corpus['review_correct'] = corpus.apply(lambda y: check_spell4(y['FeedbackComment']), axis=1)
 
     # Remove stop words
     stop_set = stopwords.words('german')
