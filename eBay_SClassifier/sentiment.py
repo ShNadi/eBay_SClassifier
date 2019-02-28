@@ -11,12 +11,13 @@ def sentiment_de(text):
     blob = TextBlobDE(text)
     for sentence in blob.sentences:
         rate_blob = rate_blob + sentence.sentiment.polarity
-    if rate_blob > 0:
-        return 'Positive'
-    elif rate_blob < 0:
-        return 'negative'
-    else:
-        return 'neutral'
+    return rate_blob
+    # if rate_blob > 0:
+    #     return 'Positive'
+    # elif rate_blob < 0:
+    #     return 'negative'
+    # else:
+    #     return 'neutral'
 
 
 def sentiment_polyglot(txt):
@@ -30,18 +31,20 @@ def sentiment_polyglot(txt):
             except:
                 word_rate = word_rate + 0
         doc_rate = doc_rate + word_rate
-    if doc_rate > 0:
-        return 'positive'
-    elif doc_rate < 0:
-        return 'negative'
-    else:
-        return 'neutral'
+    return doc_rate
+    # if doc_rate > 0:
+    #     return 'positive'
+    # elif doc_rate < 0:
+    #     return 'negative'
+    # else:
+    #     return 'neutral'
 
 
-data_set = pd.read_stata("data/ebay2_indegrees_comments.dta", chunksize=10,
-                         columns=['FeedbackID', 'FeedbackComment', 'FeedbackValue'])
-for chunk in data_set:
-    # chunk['sentiment_textblob'] = chunk.apply(lambda x: sentiment_de(x['FeedbackComment']), axis=1)
-    chunk['sentiment_polyglot'] = chunk.apply(lambda y: sentiment_polyglot(y['FeedbackComment']), axis=1)
-    print(chunk)
-
+data_set = pd.read_stata("data/preprocessed.dta",
+                         columns=['FeedbackID', 'PFeedbackComment', 'FeedbackValue'])
+# for chunk in data_set:
+data_set['sentiment_textblob'] = data_set.apply(lambda x: sentiment_de(x['PFeedbackComment']), axis=1)
+data_set['sentiment_polyglot'] = data_set.apply(lambda y: sentiment_polyglot(y['PFeedbackComment']), axis=1)
+print(data_set)
+outfile = 'data/sentiment2.dta'
+data_set.to_stata(outfile)
