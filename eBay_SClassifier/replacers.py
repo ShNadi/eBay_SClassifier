@@ -1,6 +1,6 @@
 import re
 from nltk.corpus import wordnet
-import language_check
+# import language_check
 from tqdm import tqdm
 
 
