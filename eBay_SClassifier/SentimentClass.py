@@ -24,19 +24,7 @@ class PreProcess(object):
     def __init__(self, feedbackcomment):
         self.feedbackcomment = feedbackcomment
 
-    # check spelling and correct misspelling
-    # def check_spell(self):
-    #     for w in self.feedbackcomment:
-    #         word = w.split()
-    #         strc = ""
-    #         spell = SpellChecker(language='de')
-    #         misspelled = spell.unknown(word)
-    #         for x in word:
-    #             if x in misspelled:
-    #                 strc = strc + " " + spell.correction(x)
-    #             else:
-    #                 strc = strc + " " + x
-    #         return strc
+    # correct misspelling
     def check_spell(self, row):
         word = row.split()
         strc = ""
@@ -51,6 +39,21 @@ class PreProcess(object):
 
     def correct_spell(self):
         df = [self.check_spell(row) for row in self.feedbackcomment]
+        return df
+
+    # Remove punctuation
+    def remove_punc(self, row):
+        str_punc = ''
+        for i in row:
+            if i not in string.punctuation:
+                str_punc = str_punc + i
+            else:
+                str_punc = str_punc + ' '
+
+        return str_punc
+
+    def remove_punctuation(self):
+        df = [self.remove_punc(row) for row in self.feedbackcomment]
         return df
 
 
