@@ -9,10 +9,23 @@ from spellchecker import SpellChecker
 pd.set_option('display.expand_frame_repr', False)
 
 
+# def check_spell4(text, i=[0]):
+#     i[0] += 1
+#     print(i[0])
+#     print("still working")
+#     word = text.split()
+#     strc = ""
+#     spell = SpellChecker(language='de')
+#     misspelled = spell.unknown(word)
+#     for w in word:
+#         if w in misspelled:
+#             strc = strc + " " + spell.correction(w)
+#         else:
+#             strc = strc + " " + w
+#     return strc
 def check_spell4(text, i=[0]):
     i[0] += 1
     print(i[0])
-    print("still working")
     word = text.split()
     strc = ""
     spell = SpellChecker(language='de')
@@ -23,7 +36,6 @@ def check_spell4(text, i=[0]):
         else:
             strc = strc + " " + w
     return strc
-
 
 
 # def clean(corpus):
@@ -90,7 +102,6 @@ def pre_process(corpus):
 
     corpus['PFeedbackComment'] = corpus['FeedbackComment_lowercase']
     return corpus
-
 
 
 

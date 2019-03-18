@@ -28,17 +28,19 @@ def translate_de(text):
         blob_en = blob.translate(to="en")
     return blob_en.string
 
-dd = pd.read_stata('data/sentiment1')
 
-
-# # read DataSet
-# d1 = pd.read_stata("data/sentiment2.dta")
-# d1['FeedbackComment_en'] = d1.apply(lambda y: translate_de(y['PFeedbackComment']), axis=1)
-# OutPath = 'data/english2.dta'
-# d1.to_stata(OutPath)
-# # d1 = pd.read_stata("data/english.dta")
-# # print(d1)
 #
+# # read DataSet
+# d1 = pd.read_stata("data/s.dta")
+# d1['FeedbackComment_en'] = d1.apply(lambda y: translate_de(y['PFeedbackComment']), axis=1)
+# OutPath = 'data/eng.dta'
+# d1.to_stata(OutPath)
+
+
+
+# d1 = pd.read_stata("data/english.dta")
+# print(d1)
+
 
 # for chunk in data_set:
 #     # chunk['FeedbackComment_en'] = chunk.apply(lambda y: translate_de(y['FeedbackComment']), axis=1)
