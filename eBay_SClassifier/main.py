@@ -13,26 +13,25 @@ pd.set_option('display.expand_frame_repr', False)
 def sentiment(preprocess = False, sentiment_de = False, translate_to_en =False, sentiment_en = False, plot = False):
         # ***************** Pre-processing *********************************************************************
         if preprocess==True:
+            # Read dataset
             data_set = pd.read_stata("test/sample.dta", columns=['FeedbackID', 'FeedbackComment', 'FeedbackValue'])
-            # print(data_set)
 
-            # data_set.FeedbackValue.replace([1, 2, 8], ['negative', 'positive', 'neutral'], inplace=True)
-            # # print(data_set)
-            #
-            #
-            # data_set['Feedback_RemovedPunctuations'] = data_set['FeedbackComment'].apply(
-            # lambda x: ''.join([i for i in x
-            #                    if i not in string.punctuation]))
-            # # print(data_set)
-            #
-            #
-            # data_set['FeedbackComment_lowercase'] = data_set['Feedback_RemovedPunctuations'].str.lower()
-            # print(data_set)
+            # Change scores to the categorical values
+            data_set['FeedbackValue_category'] = data_set.FeedbackValue
+            data_set.FeedbackValue_category.replace([1, 2, 8], ['negative', 'positive', 'neutral'], inplace=True)
+            print(data_set)
 
+            # Replace punctuation with space
+            text = data_set['FeedbackComment']
+            X = SentimentClass.PreProcess(text)
+            data_set['Feedback_RemovedPunctuations'] = X.remove_punctuation()
+            print(data_set)
 
-            # data_set['FeedbackComment_CorrectSpelling'] = data_set.apply(lambda y: de_preprocessing.check_spell4(y['FeedbackComment_lowercase']), axis=1)
-            # data_set['PFeedbackComment'] = data_set['FeedbackComment_CorrectSelling']
-            # print(data_set)
+            # Decapitalize characters
+            data_set['FeedbackComment_lowercase'] = data_set['Feedback_RemovedPunctuations'].str.lower()
+            print(data_set)
+
+            # Correct misspelled words
             t = data_set['FeedbackComment_lowercase']
             x = SentimentClass.PreProcess(t)
             data_set['FeedbackComment_CorrectSpelling'] = x.correct_spell()
