@@ -2,8 +2,7 @@ import pandas as pd
 import SentimentClass
 from sklearn.metrics import confusion_matrix
 import string
-import de_preprocessing
-import translate
+# import translate
 
 
 pd.set_option('display.expand_frame_repr', False)
@@ -19,22 +18,21 @@ def sentiment(preprocess = False, sentiment_de = False, translate_to_en =False, 
             # Change scores to the categorical values
             data_set['FeedbackValue_category'] = data_set.FeedbackValue
             data_set.FeedbackValue_category.replace([1, 2, 8], ['negative', 'positive', 'neutral'], inplace=True)
-            print(data_set)
 
             # Replace punctuation with space
             text = data_set['FeedbackComment']
             X = SentimentClass.PreProcess(text)
             data_set['Feedback_RemovedPunctuations'] = X.remove_punctuation()
-            print(data_set)
 
             # Decapitalize characters
-            data_set['FeedbackComment_lowercase'] = data_set['Feedback_RemovedPunctuations'].str.lower()
-            print(data_set)
+            #* data_set['FeedbackComment_lowercase'] = data_set['Feedback_RemovedPunctuations'].str.lower()
 
             # Correct misspelled words
-            t = data_set['FeedbackComment_lowercase']
+            #* t = data_set['FeedbackComment_lowercase']
+            t = data_set['Feedback_RemovedPunctuations']
             x = SentimentClass.PreProcess(t)
-            data_set['FeedbackComment_CorrectSpelling'] = x.correct_spell()
+            df_chechspell = x.check()
+            data_set = pd.concat([data_set, df_chechspell], axis=1)
             print(data_set)
 
             # out = 'test/preprocessed.dta'

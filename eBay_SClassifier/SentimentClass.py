@@ -14,7 +14,7 @@ import itertools
 import matplotlib.pyplot as plt
 import numpy as np
 import itertools
-
+from langdetect import detect
 
 # expand DataFrame in output
 pd.set_option('display.expand_frame_repr', False)
@@ -24,22 +24,34 @@ class PreProcess(object):
     def __init__(self, feedbackcomment):
         self.feedbackcomment = feedbackcomment
 
-    # correct misspelling
+    # Correct misspelling
     def check_spell(self, row):
+        lang = detect(row)
         word = row.split()
-        strc = ""
-        spell = SpellChecker(language='de')
-        misspelled = spell.unknown(word)
-        for x in word:
-            if x in misspelled:
-                strc = strc + " " + spell.correction(x)
-            else:
-                strc = strc + " " + x
-        return strc
+        e = pd.Series([])
+        misspelled_count = 0
+        checked = ""
+        ch = pd.Series([])
+        if lang == 'de':
+            spell = SpellChecker(language='de')
+            misspelled = spell.unknown(word)
+            misspelled_count = len(misspelled)
+            for x in word:
+                if x in misspelled:
+                    checked = checked + " " + spell.correction(x)
+                else:
+                    checked = checked + " " + x
 
-    def correct_spell(self):
-        df = [self.check_spell(row) for row in self.feedbackcomment]
+            return checked, misspelled_count
+        else:
+            return row, misspelled_count
+
+    def check(self):
+        df =pd.DataFrame([self.check_spell(row) for row in self.feedbackcomment], columns=['FbComment_checkedspell',
+                                                                                           'misspelled_count'])
         return df
+
+
 
     # Remove punctuation
     def remove_punc(self, row):
@@ -55,6 +67,7 @@ class PreProcess(object):
     def remove_punctuation(self):
         df = [self.remove_punc(row) for row in self.feedbackcomment]
         return df
+
 
 
 class TranslateEn(object):
