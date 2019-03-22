@@ -25,11 +25,10 @@ def sentiment(preprocess = False, sentiment_de = False, translate_to_en =False, 
             data_set['Feedback_RemovedPunctuations'] = X.remove_punctuation()
 
             # Decapitalize characters
-            #* data_set['FeedbackComment_lowercase'] = data_set['Feedback_RemovedPunctuations'].str.lower()
-
+            data_set['FeedbackComment_lowercase'] = data_set['Feedback_RemovedPunctuations'].str.lower()
             # Correct misspelled words
-            #* t = data_set['FeedbackComment_lowercase']
-            t = data_set['Feedback_RemovedPunctuations']
+            t = data_set['FeedbackComment_lowercase']
+            # t = data_set['Feedback_RemovedPunctuations']
             x = SentimentClass.PreProcess(t)
             df_chechspell = x.check()
             data_set = pd.concat([data_set, df_chechspell], axis=1)

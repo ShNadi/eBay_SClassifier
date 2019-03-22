@@ -25,11 +25,17 @@ class PreProcess(object):
         self.feedbackcomment = feedbackcomment
 
     # Correct misspelling
-    def check_spell(self, row):
-        lang = detect(row)
+    def check_spell(self, row, i=[0]):
+        i[0] += 1
+        print(i[0])
+        misspelled_count = 0
+        try:
+            lang = detect(row)
+        except:
+            return row, misspelled_count
         word = row.split()
         e = pd.Series([])
-        misspelled_count = 0
+
         checked = ""
         ch = pd.Series([])
         if lang == 'de':
