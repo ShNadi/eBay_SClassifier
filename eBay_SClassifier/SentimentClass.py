@@ -57,8 +57,6 @@ class PreProcess(object):
                                                                                            'misspelled_count'])
         return df
 
-
-
     # Remove punctuation
     def remove_punc(self, row):
         str_punc = ''
@@ -74,6 +72,21 @@ class PreProcess(object):
         df = [self.remove_punc(row) for row in self.feedbackcomment]
         return df
 
+    # Remove Stopwords from corpus
+    def remove_stop_words(self, stop):
+        removed_stop_words = []
+        for review in self.feedbackcomment:
+            removed_stop_words.append(
+                ' '.join([word for word in review.split()
+                          if word not in stop])
+            )
+        return removed_stop_words
+
+    # Normalization
+    def get_stemmed_text(self):
+        from nltk.stem.snowball import SnowballStemmer
+        stemmer = SnowballStemmer("german")
+        return [' '.join([stemmer.stem(word) for word in review.split()]) for review in self.feedbackcomment]
 
 
 class TranslateEn(object):
