@@ -1,6 +1,8 @@
 import pandas as pd
 import SentimentClass
 from sklearn.metrics import confusion_matrix
+from pprint import pprint
+
 import multiprocessing
 import string
 # import translate
@@ -16,7 +18,12 @@ def sentiment(preprocess = 'False', sentiment_de = False, translate_to_en =False
             # Read dataset
             data_set = pd.read_stata("data/random_sample2.dta", columns=['FeedbackID', 'FeedbackComment', 'FeedbackValue'])
 
-            # Change scores to the categorical values
+            '''
+            Change scores to the categorical values:
+            1 -> negative
+            2 -> positive
+            3 -> neutral            
+            '''
             data_set['FeedbackValue_category'] = data_set.FeedbackValue
             data_set.FeedbackValue_category.replace([1, 2, 8], ['negative', 'positive', 'neutral'], inplace=True)
 
@@ -67,7 +74,7 @@ def sentiment(preprocess = 'False', sentiment_de = False, translate_to_en =False
 
         # ***************** German Sentiment *******************************************************************
         if sentiment_de == True:
-            data_set = pd.read_stata("data/prep_LTSF.dta", columns=['FeedbackID', 'PFBComment', 'FeedbackValue',
+            data_set = pd.read_stata("data/prep_LTST.dta", columns=['FeedbackID', 'PFBComment', 'FeedbackValue',
                                                                     'FeedbackValue_category'])
             text = data_set['PFBComment']
             # sentiment_de is an object from SentimentLexDe class
@@ -77,7 +84,7 @@ def sentiment(preprocess = 'False', sentiment_de = False, translate_to_en =False
             # Calculate sentiment using polyglot
             data_set['polyglot_score'], data_set['polyglot_category'] = sentiment_de.sentiment_polyglot()
             print(data_set)
-            outfile = 'data/SLFSF_de.dta'
+            outfile = 'data/SLTST_de.dta'
             data_set.to_stata(outfile)
 
         # ****************** Translate to English **************************************************************
