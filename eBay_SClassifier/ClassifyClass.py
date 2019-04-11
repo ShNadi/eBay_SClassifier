@@ -77,7 +77,7 @@ class SClassifier(object):
 
                 print(gnb_predictions)
 
-            # training a DescisionTreeClassifier
+            # training a DecisionTreeClassifier
             elif kwargs['classifier'] == 'DT':
                 dtree_model = DecisionTreeClassifier(max_depth=2).fit(X_train, y_train)
                 dtree_predictions = dtree_model.predict(X_val)
@@ -95,7 +95,7 @@ class SClassifier(object):
                 knn_predictions = knn.predict(X_val)
                 print("Final Accuracy for KNN: %s"
                       % accuracy_score(y_val, knn_predictions))
-                # print("classification reports:\n", classification_report(y_val, knn_predictions))
+                print("classification reports:\n", classification_report(y_val, knn_predictions))
 
                 print(knn_predictions)
 
@@ -104,7 +104,7 @@ class SClassifier(object):
 
 # data_set = pd.read_stata('data/New folder/eng.dta', columns=['PFeedbackComment', 'FeedbackValue'])
 data_set = pd.read_stata('data/random_sample3.dta', columns=['FeedbackComment', 'FeedbackValue'])
-print(data_set.shape)
+# print(data_set.shape)
 #
 corpus = data_set['FeedbackComment']
 target = data_set['FeedbackValue']
